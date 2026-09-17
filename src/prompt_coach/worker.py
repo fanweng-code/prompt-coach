@@ -60,6 +60,10 @@ class RequestController(QObject):
         else:
             self.ready_to_close.emit()
 
+    def stay_open(self) -> None:
+        """Withdraw deferred exit without cancelling the running request."""
+        self._close_after_finish = False
+
     @Slot()
     def _finished(self) -> None:
         worker = self._worker

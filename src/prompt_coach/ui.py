@@ -152,6 +152,9 @@ class MainWindow(QMainWindow):
             event.accept()
             return
         event.ignore()
+        # A new close dialog supersedes the previous exit choice, including
+        # when the request completes while this modal event loop is running.
+        self.controller.stay_open()
         dialog = QMessageBox(self)
         dialog.setWindowTitle("請求尚未完成")
         dialog.setText("請求仍在背景執行。可留在視窗，或等待完成後退出。")
@@ -160,7 +163,10 @@ class MainWindow(QMainWindow):
         dialog.setDefaultButton(stay)
         dialog.exec()
         if dialog.clickedButton() == later:
-            self.controller.request_close_after_finish()
+            if self.controller.busy:
+                self.controller.request_close_after_finish()
+            else:
+                event.accept()
 
 
 class SettingsDialog(QDialog):

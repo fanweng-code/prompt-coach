@@ -143,3 +143,37 @@ def test_busy_close_stay_then_close_after_finish(qtbot, error):
 def test_idle_close(qtbot):
     window, _, _ = make_window(qtbot)
     assert window.close() and not window.isVisible()
+
+
+def test_stay_revokes_previously_requested_close(qtbot):
+    gate = threading.Event()
+    window, _, _ = make_window(qtbot, FakeTransformer(gate))
+    window.source_edit.setPlainText("合成")
+    try:
+        click(qtbot, window.rewrite_button)
+        choose_dialog("完成後退出")
+        window.close()
+        choose_dialog("留在視窗")
+        window.close()
+    finally:
+        gate.set()
+        qtbot.waitUntil(lambda: not window.controller.busy)
+    assert window.isVisible()
+    assert window.result_edit.toPlainText() == "合成結果"
+
+
+def test_finish_during_close_dialog_then_choose_exit(qtbot):
+    gate = threading.Event()
+    window, _, _ = make_window(qtbot, FakeTransformer(gate))
+    window.source_edit.setPlainText("合成")
+    try:
+        click(qtbot, window.rewrite_button)
+        # Release during the nested dialog loop; choose exit after QThread.finished.
+        window.controller.busy_changed.connect(lambda busy: choose_dialog("完成後退出") if not busy else None)
+        QTimer.singleShot(0, gate.set)
+        window.close()
+        qtbot.waitUntil(lambda: not window.controller.busy)
+        qtbot.waitUntil(lambda: not window.isVisible(), timeout=1000)
+    finally:
+        gate.set()
+        qtbot.waitUntil(lambda: not window.controller.busy)
