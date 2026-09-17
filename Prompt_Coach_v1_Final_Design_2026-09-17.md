@@ -1,5 +1,7 @@
 # Prompt Coach v1｜最終設計規格
 
+> 公開隱私修訂：已泛化個人設備時程與無關專案名稱，產品範圍、安全契約及驗收門檻不變。歷史驗收的原始 SHA256 對應修訂前文件，不是此公開版本。
+
 版本：1.0.0 · 定稿日期：2026-09-17 · 語言：繁體中文
 
 建議放置：`prompt-coach/docs/superpowers/specs/2026-09-17-prompt-coach-v1-design.md`

@@ -79,3 +79,9 @@ py -3.12 -m venv .venv
 | [發布前驗證](docs/acceptance/publication.md) | 公開材料範圍與本次重新測試結果 |
 
 Repo 未附 LICENSE；公開供檢視不等於授予任意再散布或商用權利。
+
+## 公開資料與隱私
+
+公開審核材料使用合成文字；`D:\work\app.py` 是測試路徑，`127.0.0.1` 是 loopback 範例，不是可從網際網路存取的個人主機。文件中的安裝路徑採通用寫法，不要求上傳 `.env`、key、設定檔或真實剪貼簿內容。
+
+目前文件已刪除不必要的個人路徑與設備計畫。最新檔案檢查不代表舊 Git commit、既有 clone 或快取已清除；範圍與限制見 [隱私檢查紀錄](docs/acceptance/privacy-review.md)。
