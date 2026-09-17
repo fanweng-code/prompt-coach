@@ -2,12 +2,12 @@ from collections.abc import Callable
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
-    QComboBox, QHBoxLayout, QLabel, QMainWindow, QMessageBox,
+    QComboBox, QDialog, QDialogButtonBox, QDoubleSpinBox, QFormLayout, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QMessageBox,
     QPlainTextEdit, QPushButton, QVBoxLayout, QWidget,
 )
 
 from .clipboard import QtClipboard
-from .models import ERROR_MESSAGES, Mode, ProfileId, RewriteError, RewriteResult
+from .models import AppConfig, ERROR_MESSAGES, Mode, ProfileId, RewriteError, RewriteResult
 from .transformer import PromptTransformer
 from .worker import RequestController
 
@@ -161,3 +161,33 @@ class MainWindow(QMainWindow):
         dialog.exec()
         if dialog.clickedButton() == later:
             self.controller.request_close_after_finish()
+
+
+class SettingsDialog(QDialog):
+    def __init__(self, config: AppConfig, session_key: str, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("設定實際改寫後端")
+        self.resize(580, 300)
+        layout = QVBoxLayout(self)
+        form = QFormLayout()
+        self.base_url_edit = QLineEdit(config.base_url)
+        self.base_url_edit.setPlaceholderText("http://127.0.0.1:8000/v1")
+        self.model_edit = QLineEdit(config.model)
+        self.key_edit = QLineEdit(session_key)
+        self.key_edit.setEchoMode(QLineEdit.EchoMode.Password)
+        self.timeout_spin = QDoubleSpinBox()
+        self.timeout_spin.setRange(0.01, 1_000_000_000)
+        self.timeout_spin.setDecimals(2)
+        self.timeout_spin.setValue(config.read_timeout_s)
+        for name, widget in (("Base URL", self.base_url_edit), ("Model", self.model_edit), ("API Key", self.key_edit), ("讀取 timeout（秒）", self.timeout_spin)):
+            form.addRow(name, widget)
+        layout.addLayout(form)
+        layout.addWidget(plain_label("API Key 僅本次 session；留空使用 PROMPT_COACH_API_KEY。\nHTTP 僅限 loopback；非本機使用 HTTPS 且需 key。讀取 timeout 不是總耗時保證。"))
+        self.error_label = plain_label("")
+        layout.addWidget(self.error_label)
+        self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel)
+        self.buttons.rejected.connect(self.reject)
+        layout.addWidget(self.buttons)
+
+    def values(self) -> tuple[AppConfig, str]:
+        return AppConfig(self.base_url_edit.text(), self.model_edit.text(), self.timeout_spin.value()), self.key_edit.text()
