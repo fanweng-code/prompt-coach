@@ -28,7 +28,7 @@
 | style_notes | 風格差異與日常可用性，與忠實度判定分開 |
 | verdict / notes | 通過／不通過／待釐清；未評閱空白 |
 
-真實個人文字不得進 repo。合成 run 原始紀錄可留本機 ignored 的 `.local/acceptance/backend-runs/`，正式文件只寫去識別化摘要；不記錄 API key。
+真實個人文字不得進 repo。合成 run 原始紀錄留本機 ignored 的 `.local/acceptance/backend-runs/`，正式文件寫去識別化摘要；不記錄 API key。後續使用者授權公開 repo 供獨立審核，指定七筆合成材料已逐字複製到 [公開證據目錄](evidence/ornith-seven)，不含個人輸入或完整本機目錄。
 
 ## 判定與版本維護
 

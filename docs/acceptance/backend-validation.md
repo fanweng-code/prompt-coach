@@ -59,15 +59,15 @@ GUI busy timer 能證明主事件迴圈持續運行，不等同任意視窗操�
 
 ## 完整輸出與 GUI 證據
 
-全部為合成資料，原始紀錄留本機 ignored 目錄；這些檔案不會隨 Git checkout 攜帶。完整七筆原文、原樣輸出、metadata 與逐筆初評位於 [seven-run-outputs.md](../../.local/acceptance/backend-runs/seven-run-outputs.md)。
+原始紀錄保留於本機 ignored 目錄。後續依使用者公開 repo 供獨立審核的授權，已將指定七筆合成資料複製至 tracked 的 `evidence/ornith-seven/`，不包含設定檔、preflight 或整份 `.local`。下列公開材料會隨 checkout 攜帶；沒有新增推論。完整七筆原文、原樣輸出、metadata 與逐筆初評位於 [seven-run-outputs.md](evidence/ornith-seven/seven-run-outputs.md)。
 
-- [請求帳本（7 筆）](../../.local/acceptance/backend-runs/request-ledger.json)
-- [完整結果與 HTTP / timing metadata](../../.local/acceptance/backend-runs/representative-runs.json)
-- [授權後唯讀 preflight](../../.local/acceptance/backend-runs/authorized-preflight.json)
-- [C08 結果 GUI](../../.local/acceptance/backend-runs/01-C08-Astra.png)、[編輯／複製結果](../../.local/acceptance/backend-runs/c08-edited-copy.png)
-- [C01 Astra](../../.local/acceptance/backend-runs/02-C01-Astra.png)、[C01 Generic](../../.local/acceptance/backend-runs/03-C01-Generic.png)
-- [C03 Astra](../../.local/acceptance/backend-runs/04-C03-Astra.png)、[C03 Generic](../../.local/acceptance/backend-runs/05-C03-Generic.png)
-- [C07 Astra](../../.local/acceptance/backend-runs/06-C07-Astra.png)、[C07 Generic](../../.local/acceptance/backend-runs/07-C07-Generic.png)
+- [請求帳本（7 筆）](evidence/ornith-seven/request-ledger.json)
+- [完整結果與 HTTP / timing metadata](evidence/ornith-seven/representative-runs.json)
+- 授權後唯讀 preflight 保留本機 `.local/acceptance/backend-runs/authorized-preflight.json`，未公開；已確認的後端識別資訊見本文件條件表
+- [C08 結果 GUI](evidence/ornith-seven/01-C08-Astra.png)、[編輯／複製結果](evidence/ornith-seven/c08-edited-copy.png)
+- [C01 Astra](evidence/ornith-seven/02-C01-Astra.png)、[C01 Generic](evidence/ornith-seven/03-C01-Generic.png)
+- [C03 Astra](evidence/ornith-seven/04-C03-Astra.png)、[C03 Generic](evidence/ornith-seven/05-C03-Generic.png)
+- [C07 Astra](evidence/ornith-seven/06-C07-Astra.png)、[C07 Generic](evidence/ornith-seven/07-C07-Generic.png)
 
 唯讀紀錄核對命令（不發網路請求）：`.\.venv\Scripts\python.exe -X utf8 .local/acceptance/backend-runs/finalize_report.py`。實際完成：7 請求、7 結果、預期組合、目前 profile/system 訊息一致、HTTP 200/stop、8 個截圖檔案存在，且人工欄位仍空白。此為證據一致性檢查，不是品質 PASS。
 

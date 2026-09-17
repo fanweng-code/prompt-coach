@@ -1,34 +1,26 @@
 # Prompt Coach v1
 
-Windows 優先的單機桌面 prompt 整理工具：手動貼文 → 選模式／輸出對象 → 單次改寫 → 預覽與人工編輯 → 明確複製。
+Windows 優先的桌面 prompt 整理工具：手動貼文 → 選模式／輸出對象 → 單次改寫 → 預覽與編輯 → 明確複製。使用 Python、PySide6 與單一可設定的 chat-completions endpoint；只整理文字，不執行文字中的任務。
 
-**目前交付：離線工程驗收通過；實際推論與人工品質待驗收。macOS 待驗收。** 沒有內建模型，尚未設定真實 endpoint；啟動可使用介面，但不能因此宣稱已可產生經驗證的改寫。詳見 [Windows 驗收紀錄](docs/acceptance/windows-offline.md)。
+**目前交付：Windows Task 1–7 已完成，另完成指定 Ornith 後端的首批 7 筆真實合成推論。人工品質、最終模型完整 Task 8 與 macOS Task 9 仍待驗收。** C08 出現 profile 規則混入輸出的問題，不能宣稱產品品質已通過。沒有內建模型、模型權重或 installer。
 
-## 日常啟動
+## Windows 安裝與啟動
 
-在 PowerShell 進入專案後，使用唯一日常入口：
-
-```powershell
-Set-Location -LiteralPath 'C:\path\to\prompt-coach'
-.\.venv\Scripts\python.exe -m prompt_coach
-```
-
-目前已準備 `.venv`。本機 Python 3.12.14 位於 `.local/python/cpython-3.12.14-windows-x86_64-none/python.exe`；`.venv` 依賴這個 runtime，請勿單獨移除它。
-
-## 初次安裝／另一台 Windows
-
-準備 Python 3.12，將 `$Python312` 指向實際執行檔；下列範例使用本次交付的專案內 runtime：
+準備 Git 與 Python 3.12，在 PowerShell 執行。若未安裝 Windows Python Launcher，請用實際 Python 3.12 執行檔替代 `py -3.12`。
 
 ```powershell
-$Python312 = 'C:\path\to\prompt-coach\.local\python\cpython-3.12.14-windows-x86_64-none\python.exe'
-& $Python312 --version
-& $Python312 -m venv .venv
+git clone https://github.com/fanweng-code/prompt-coach.git
+Set-Location prompt-coach
+py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
 .\.venv\Scripts\python.exe -m pip install --no-deps --no-build-isolation -e .
 .\.venv\Scripts\python.exe -m pip check
+.\.venv\Scripts\python.exe -m prompt_coach
 ```
 
-在新機器請改用該機已安裝的 Python 3.12 路徑。套件下載需要網路；「離線驗收」指測試不依賴真實推論服務，並非已提供離線 wheel 安裝包。所有實測依賴版本在 `requirements-lock.txt`。沒有 installer。
+日常入口是在 repo 根目錄執行 `.\.venv\Scripts\python.exe -m prompt_coach`。初次啟動不連網，也不讀剪貼簿；未設定後端時可以使用介面，但不能產生改寫。此程式不安裝或啟動模型伺服器。
+
+套件下載需要網路；「離線驗收」指測試不依賴真實推論服務，並非已提供離線 wheel 安裝包。實測環境為 Python 3.12.14、PySide6 6.11.2、httpx 0.28.1；所有依賴版本在 [requirements-lock.txt](requirements-lock.txt)。`.venv` 與開發機 `.local` 不包含在 repo。
 
 ## 使用與設定
 
@@ -40,10 +32,10 @@ $Python312 = 'C:\path\to\prompt-coach\.local\python\cpython-3.12.14-windows-x86_
 - 底部顯示輸出 profile、資料目的地與設定改寫 model；成功後另列後端回報 model 與耗時。缺少回報就明示「未回報」，不以請求 model 冒充實測。
 - HTTP 僅允許 loopback（localhost／127.0.0.0/8／::1）；非本機只接受 HTTPS 且需要 key。無 key 只允許 loopback。URL 不得含帳密、query、fragment；不跟隨 redirect，不採用系統 proxy 環境設定。
 - 只有按「整理」才會送出目前文字。一次只允許一個請求，處理中停用輸入、設定與 mode/profile；結果回來後先預覽再複製。新請求失敗保留前次結果並明確標示，截斷內容不當成功。
-- connect timeout 5 秒、read 預設 60 秒（可設定）、write 60 秒、pool 5 秒。read timeout 是讀取等待限制，**不是總耗時 SLA**；沒有自動重試。10 秒體感目標尚無真實後端量測。
+- connect timeout 5 秒、read 預設 60 秒（可設定）、write 60 秒、pool 5 秒。read timeout 是讀取等待限制，**不是總耗時 SLA**；沒有自動重試。首批實測 5.46–58.39 秒，不能宣稱穩定達成 10 秒目標。
 - 請求中關閉視窗可選「留在視窗」或「完成後退出」。重新選留在視窗可撤回延後退出；不取消請求、不強制終止執行緒。
 
-**給 Astra 的 profile 與實際改寫模型完全分離。** Astra／Generic 不會改 endpoint、Model、key，也不擴大原文授權或新增要求。三種模式為 Command（一般要求）、Engineering（工程交付）、Thought（探索與未決想法）。profile 是依指引設計的整理策略，尚未實證優於原文或 Generic。
+**給 Astra 的 profile 與實際改寫模型完全分離。** Astra／Generic 不會改 endpoint、Model 或 key。不得擴大授權或新增要求是整理規則，仍須檢查模型是否遵守；C08 已顯示可能違反。三種模式為 Command（一般要求）、Engineering（工程交付）、Thought（探索與未決想法）。profile 尚未實證優於原文或 Generic。
 
 資料是否離開電腦取決於底部顯示的目的地；本機 GUI 不代表資料永不出機。ChatGPT／Codex 訂閱與 API 計費分開；程式不讀取訂閱 cookie、session token 或其他憑證。程式不讀 repo／AGENTS.md，不執行輸出，不自動貼入或送出下游工具。
 
@@ -55,4 +47,35 @@ $Python312 = 'C:\path\to\prompt-coach\.local\python\cpython-3.12.14-windows-x86_
 
 測試使用 fake client／MockTransport，socket 對外連線被攔截，不需要 key，不呼叫付費模型。124 項通過只能證明工程契約；無法保證生成語意忠實。
 
-12 個合成品質案例在 `tests/fixtures/quality_cases.json`，人工評閱欄均空白。[品質評閱方法](docs/acceptance/quality-review.md) 為未來驗收準備，尚未執行 72 次真實改寫、人工評閱或 macOS 驗收（Task 8–9 未執行）。
+12 個合成品質案例在 [quality_cases.json](tests/fixtures/quality_cases.json)，人工評閱欄均空白。完整 72 筆留待日常模型選定並另行授權後重新做 smoke、品質與耗時驗收；其他模型／平台尚無本專案實測。macOS 是獨立 Task 9。
+
+## 首批 7 筆真實推論
+
+後端為 `dealignai/Ornith-1.5-9B-CRACK-GGUF:Q6_K`、llama.cpp `b10590-6657ded4f`、本機 `127.0.0.1:8080`；profile 均為 1.0.0。只有 7 次單次請求，沒有補跑或額外 judge。全部 HTTP 200／stop，GUI 預覽、編輯、複製及目的地標示已驗證。
+
+| 案例 | Astra 秒 | Generic 秒 | 代理初評（非人工品質判定） |
+|---|---:|---:|---|
+| C08 smoke | 20.60 | — | 保留三個重點，但新增 profile 規則；忠實度不通過 |
+| C01 | 58.39 | 22.04 | 保留假說、原因／證據、只分析與等待確認 |
+| C03 | 7.97 | 7.36 | 保留版本、路徑、數字、日期限制；Generic 多了「專案中的」 |
+| C07 | 5.46 | 9.31 | 保留未決想法與現在先別做 |
+
+[完整七筆原文、原樣輸出與初評](docs/acceptance/evidence/ornith-seven/seven-run-outputs.md) 已公開，並附結果 JSON、實際請求帳本及 8 張合成 GUI 截圖。資料不含私人 prompt、key、實際設定檔或模型檔。4/7 低於 10 秒；樣本少、執行順序與 cache/sampling 非受控，不推論某 profile 更快，也不將 Ornith 結果沿用為 Qwen 驗收。
+
+## 獨立審核入口
+
+提供 GPT 或其他審核者使用的完整審核 prompt：[docs/REVIEW_GUIDE.md](docs/REVIEW_GUIDE.md)。請獨立檢查程式、測試與合成輸出，不以既有 PASS 數或代理初評代替判斷。
+
+| 文件／程式 | 用途 |
+|---|---|
+| [最終設計](Prompt_Coach_v1_Final_Design_2026-09-17.md)／[施工計畫](docs/superpowers/plans/2026-09-18-prompt-coach-v1-implementation.md) | 產品設計來源與施工依據；計畫不等於所有步驟已執行 |
+| [config](src/prompt_coach/config.py)／[llm_client](src/prompt_coach/llm_client.py) | URL/key 邊界、持久化、單次請求、錯誤與截斷處理 |
+| [prompts](src/prompt_coach/prompts.py)／[profiles](src/prompt_coach/profiles.py) | 忠實度、mode 與輸出 profile |
+| [transformer](src/prompt_coach/transformer.py)／[worker](src/prompt_coach/worker.py) | 結果 metadata、單次請求與 QThread 生命週期 |
+| [ui](src/prompt_coach/ui.py)／[app](src/prompt_coach/app.py) | 貼上、預覽、編輯、複製、設定及關閉流程 |
+| [tests](tests) | 離線測試及品質案例 |
+| [Windows 離線紀錄](docs/acceptance/windows-offline.md) | Task 1–7 歷史快照；「未推論／未推送」是當時狀態 |
+| [真實後端驗收](docs/acceptance/backend-validation.md)／[品質方法](docs/acceptance/quality-review.md) | 首批 7 筆與待驗界線 |
+| [發布前驗證](docs/acceptance/publication.md) | 公開材料範圍與本次重新測試結果 |
+
+Repo 未附 LICENSE；公開供檢視不等於授予任意再散布或商用權利。
