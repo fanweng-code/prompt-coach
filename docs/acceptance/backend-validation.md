@@ -6,7 +6,7 @@
 
 | 欄位 | 實際值 |
 |---|---|
-| 產品程式 | Task 1–7 commit `[historical commit reference removed]`；本輪未修改產品程式或 profile |
+| 產品程式 | Task 1–7 commit `d4b9178`（隱私清理後 SHA）；本輪未修改產品程式或 profile |
 | 平台 | Windows；Python 3.12.14；PySide6 6.11.2；httpx 0.28.1 |
 | Base URL | `http://127.0.0.1:8080/v1`，本機 loopback、免 key |
 | requested / reported model | 全部一致：`dealignai/Ornith-1.5-9B-CRACK-GGUF:Q6_K` |

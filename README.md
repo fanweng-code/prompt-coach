@@ -84,4 +84,4 @@ Repo 未附 LICENSE；公開供檢視不等於授予任意再散布或商用權�
 
 公開審核材料使用合成文字；`D:\work\app.py` 是測試路徑，`127.0.0.1` 是 loopback 範例，不是可從網際網路存取的個人主機。文件中的安裝路徑採通用寫法，不要求上傳 `.env`、key、設定檔或真實剪貼簿內容。
 
-目前文件已刪除不必要的個人路徑與設備計畫。最新檔案檢查不代表舊 Git commit、既有 clone 或快取已清除；範圍與限制見 [隱私檢查紀錄](docs/acceptance/privacy-review.md)。
+文件與公開 `main` 的歷史已清理個人路徑、設備計畫及私人 commit email，舊 SHA 已變更。若曾 clone 舊版，請重新 clone，避免重新引入舊歷史。既有副本與 GitHub 快取不保證清除；範圍與限制見 [隱私檢查紀錄](docs/acceptance/privacy-review.md)。

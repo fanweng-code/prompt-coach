@@ -75,13 +75,15 @@ Task 1 安全設定與型別、Task 2 忠實度規則／獨立 profile、Task 3 
 
 | 邊界 | commit |
 |---|---|
-| 基線設計／計畫 | `[historical commit reference removed]` |
-| T1 設定／契約 | `[historical commit reference removed]` |
-| T2 忠實度／profile | `[historical commit reference removed]` |
-| T3 HTTP client | `[historical commit reference removed]` |
-| T4 worker | `[historical commit reference removed]` |
-| T5 主視窗 | `[historical commit reference removed]` |
-| T6 設定／入口 | `[historical commit reference removed]` |
-| T7 案例／文件／退出回歸 | 本紀錄所屬的 `test: add quality cases and Windows offline acceptance` commit，使用 `git log -1` 查詢 |
+| 基線設計／計畫 | `7092ff1` |
+| T1 設定／契約 | `69d97b5` |
+| T2 忠實度／profile | `7cc960b` |
+| T3 HTTP client | `6e70e77` |
+| T4 worker | `8939f39` |
+| T5 主視窗 | `97d3f00` |
+| T6 設定／入口 | `2e2cd6c` |
+| T7 案例／文件／退出回歸 | `d4b9178` |
+
+以上為隱私清理後的提交識別碼；產品程式與測試內容未因重寫而改變。
 
 尚未驗收：真實後端相容性／實際推論、12×2×3 的人工語意品質、實際耗時／10 秒目標、macOS 真機啟動／clipboard／thread。12 案的人工評閱欄均空白。mock PASS 不能取代這些項目，也不代表完整 Windows v1 推論品質或跨平台完成。

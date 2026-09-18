@@ -8,7 +8,7 @@
 |---|---|---|
 | README | 無私人 email 或實際使用者目錄；仍提及個人未來設備／模型計畫 | 改為一般性待驗敘述，新增公開資料邊界 |
 | 設計、施工計畫、驗收文件 | 個人目錄、設備時程、與本專案無關的專案名稱／偏好 | 改為通用路徑、環境變數或移除無關內容；產品契約與合成測資不變 |
-| Git commit metadata | 舊作者與提交者 email 使用私人信箱 | 本 repo 後續提交改用 GitHub 提供的 noreply email；舊 commit 不會因此改變 |
+| Git commit metadata | 原作者與提交者 email 使用私人信箱 | 經使用者授權，已重寫 11 個 commit 並以 noreply email 取代；本 repo 後續提交亦使用 noreply |
 | 合成輸出 JSON／請求帳本 | 案例文字與預期合成輸入一致，無 Authorization header 或 key | 保留原樣供審核；`human_review` 仍空白 |
 | 8 張 PNG | 逐張檢視，只有測試 App、合成文字、模型及 loopback 標示 | 未見私訊、桌面其他視窗、姓名或 key；保留原樣 |
 | `.gitignore` | 已排除 runtime、venv 與 `.local`，但缺少常見憑證檔規則 | 加入 `.env`、根目錄 settings.json 及常見私鑰／憑證副檔名排除 |
@@ -17,6 +17,8 @@
 
 ## 歷史與快取限制
 
-**目前文件修正不會清除舊 commit 中的私人 email、歷史路徑或無關個人資訊。** 本次普通提交也不代表已重寫遠端歷史。清理公開歷史需要另外替換 commit 並 force-push，會改變舊 SHA 及相關引用。
+**已依使用者明確授權，將清理後的 11 個 commit 以鎖定舊 main SHA 的 `--force-with-lease` 更新公開 `main`。** 已逐一核對重寫前後的程式、測試、JSON 與截圖 blob 不變；清理後歷史使用 noreply email，已移除指定個人路徑、設備時程、無關專案內容與舊 commit 引用。文件中的 task commit 對照已更新為清理後 SHA。
+
+原始歷史備份僅留本機 ignored 目錄，未另推送備份分支或 tag。本機工作分支也已同步，避免再次發布舊歷史。清理後 SHA 與先前不同；若曾 clone 舊版，請重新 clone，不要把舊分支 merge 或 push 回來。
 
 即使重寫，既有 clone／fork 與 GitHub 快取仍可能保存舊資料；必要時需與持有者或 GitHub Support 協調，不能承諾撤回所有已公開副本。參考 [GitHub 官方敏感資料移除說明](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)。
