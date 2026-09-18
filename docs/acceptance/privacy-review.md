@@ -17,6 +17,12 @@
 
 ## 歷史與快取限制
 
+### v1 收尾提交前複查
+
+本輪只納入 Task 8 工具、政策 metadata、測試、CI、文件及固定合成案例證據。新增 preflight 僅保留 loopback、公開模型識別、runtime 版本與模型／sampling 資訊，未納入模型檔案路徑、私人使用者目錄、key 或認證 header。24 格輸入逐字對應 repo 合成 fixture，原 C08 失敗及舊七筆證據未修改。`.local`、venv、實際設定與憑證檔不納入提交；作者及提交者沿用公開 GitHub noreply 身分。檢查針對此次提交內容，不改變下述舊 GitHub 物件／快取限制。
+
+### 先前歷史清理
+
 **已依使用者明確授權，將清理後的 11 個 commit 以鎖定舊 main SHA 的 `--force-with-lease` 更新公開 `main`。** 已逐一核對重寫前後的程式、測試、JSON 與截圖 blob 不變；清理後歷史使用 noreply email，已移除指定個人路徑、設備時程、無關專案內容與舊 commit 引用。文件中的 task commit 對照已更新為清理後 SHA。
 
 原始歷史備份僅留本機 ignored 目錄，未另推送備份分支或 tag。本機工作分支也已同步，避免再次發布舊歷史。清理後 SHA 與先前不同；若曾 clone 舊版，請重新 clone，不要把舊分支 merge 或 push 回來。

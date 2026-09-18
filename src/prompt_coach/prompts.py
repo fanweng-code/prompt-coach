@@ -1,3 +1,5 @@
+import hashlib
+
 from .models import Mode
 from .profiles import Profile
 
@@ -24,3 +26,21 @@ MODE_RULES = {
 
 def build_system_prompt(mode: Mode, profile: Profile) -> str:
     return "\n\n".join((COMMON_RULES, MODE_RULES[mode], profile.instructions))
+
+
+# Covers common + mode + profile composition; bump when the policy changes.
+POLICY_VERSION = "1.0.0"
+
+
+def policy_snapshot(mode: Mode, profile: Profile) -> dict:
+    system = build_system_prompt(mode, profile)
+    return {
+        "policy_version": POLICY_VERSION,
+        "mode": mode.value,
+        "profile_id": profile.id.value,
+        "profile_version": profile.version,
+        "source_references": list(profile.source_references),
+        "last_reviewed": profile.last_reviewed,
+        "system_prompt": system,
+        "system_sha256": hashlib.sha256(system.encode("utf-8")).hexdigest(),
+    }

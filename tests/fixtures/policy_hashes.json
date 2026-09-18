@@ -1,0 +1,32 @@
+{
+  "Command/Astra": {
+    "policy_version": "1.0.0",
+    "profile_version": "1.0.0",
+    "system_sha256": "42f387e19865ef5dff6d1b81421684e8eac1405238c819967cc486fe29d7e555"
+  },
+  "Command/Generic": {
+    "policy_version": "1.0.0",
+    "profile_version": "1.0.0",
+    "system_sha256": "b293b95c71fbfae29c7dd22e0834641a60b9c052f167a31b3692db688ab72ff6"
+  },
+  "Engineering/Astra": {
+    "policy_version": "1.0.0",
+    "profile_version": "1.0.0",
+    "system_sha256": "da9cba23c12d89c84cc2eb97e80c8dfbf9ebd0a22929f0ad93a748c04b5cf609"
+  },
+  "Engineering/Generic": {
+    "policy_version": "1.0.0",
+    "profile_version": "1.0.0",
+    "system_sha256": "0ff0964a990900d9ccf17992a43df6f9b92aab94cecb1e16588ee12d0aa89263"
+  },
+  "Thought/Astra": {
+    "policy_version": "1.0.0",
+    "profile_version": "1.0.0",
+    "system_sha256": "8188ca5473ed3c86503ebafbc039244511b022bad9dea2699845450f31cfd7a8"
+  },
+  "Thought/Generic": {
+    "policy_version": "1.0.0",
+    "profile_version": "1.0.0",
+    "system_sha256": "c85d2c8009ea559dcdbee2f72fc527d5eb44e49ededabd1bf8d461e5efb2793c"
+  }
+}

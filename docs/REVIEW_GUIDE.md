@@ -8,6 +8,7 @@
 2. [最終設計](../Prompt_Coach_v1_Final_Design_2026-09-17.md) 與 [施工計畫](superpowers/plans/2026-09-18-prompt-coach-v1-implementation.md)：規格與施工依據。
 3. [src/prompt_coach](../src/prompt_coach) 與 [tests](../tests)：實際實作與測試覆蓋。
 4. [七筆原文／輸出](acceptance/evidence/ornith-seven/seven-run-outputs.md)、[結果 JSON](acceptance/evidence/ornith-seven/representative-runs.json)、[請求帳本](acceptance/evidence/ornith-seven/request-ledger.json)：原意、數字、路徑、限制與授權。
+5. [Task 8 操作手冊](acceptance/task8-runbook.md)、[暫時覆蓋與收尾紀錄](acceptance/v1-completion.md)、[完整矩陣評閱表](acceptance/evidence/ornith-coverage/review.md)：既有七筆加上本輪補缺；manifest／runs 可獨立核對。
 
 [Windows 離線紀錄](acceptance/windows-offline.md) 是 Task 1–7 當時快照，其中「沒有真實後端／尚未推送」描述當時狀態。後續驗收與發布請讀 [後端驗收](acceptance/backend-validation.md) 和 [發布驗證](acceptance/publication.md)；未改寫歷史為當時已驗收。
 
@@ -15,7 +16,7 @@
 
 ```text
 請獨立審核 https://github.com/fanweng-code/prompt-coach 。
-先讀 README.md、docs/REVIEW_GUIDE.md、最終設計與施工計畫，再實際讀 src、tests 及公開的七筆合成推論材料。
+先讀 README.md、docs/REVIEW_GUIDE.md、最終設計與施工計畫，再實際讀 src、scripts、tests 及 ornith-seven／ornith-coverage 合成推論材料。
 請記錄你取得的 branch/commit；若無法存取某檔案或執行測試，列明限制，不推測已讀取或測試通過。
 
 本次是唯讀審核。不要修改 repo、呼叫推論 endpoint、要求 API key 或執行額外模型批次。
@@ -27,16 +28,17 @@
 3. URL/key/設定檔邊界、資料目的地標示、敏感內容日誌、單次請求、錯誤／截斷結果處理。
 4. Qt worker 生命週期、busy 狀態、關閉對話框競態、留在視窗／完成後退出、結果保留及 Copy 行為。
 5. 測試是否有重要缺口或只驗 implementation 自身；能執行的離線測試請記命令和結果。
-6. 對七筆原文與輸出自行逐條評閱，不沿用代理 verdict；區分程式缺陷、規則歧義與模型能力／prompt 敏感性，不為暫時模型降低標準。
+6. 對全部已保存的原文與輸出自行逐條評閱，不沿用代理 verdict；注意舊 C08/Astra 失敗不能排除，新舊批次與 GUI/headless 證據分開。區分程式缺陷、規則歧義與模型能力／prompt 敏感性，不為暫時模型降低標準。
+7. 核對六種有效 system policy 的 hash、fixture/source hash、舊七筆匯入一致性、呼叫前落盤與中斷不重送、人工欄位未被預設通過，以及 CI 沒有真實推論。
 
 請以嚴重度排序 findings，附 file:line、觸發條件、具體影響、證據及最小修正建議。
 不確定的事項分開列為待確認，不把假設寫成已重現 bug；若沒有 findings 也請列明覆蓋範圍。
 最後列出尚未驗收：人工品質、最終模型完整 72 筆及 macOS Task 9。
-124 項離線 PASS 或 7 次 HTTP 成功均不能證明完整 Task 8、產品品質或未來 Qwen 通過。
+離線 PASS 或 HTTP 成功均不能證明完整 Task 8、產品品質或最終日常模型通過。
 ```
 
 ## 公開證據邊界
 
-公開材料只含既有七筆合成推論的逐字輸入／輸出、送出 body、HTTP/timing metadata、逐筆代理初評及 GUI 截圖；沒有新增推論。截圖只顯示合成測資與 loopback 目的地。runtime、實際設定檔、模型、preflight 機器路徑與其他 `.local` 內容未發布。
+`ornith-seven` 保持原七筆合成推論的逐字輸入／輸出、送出 body、HTTP/timing metadata、代理初評及 GUI 截圖。`ornith-coverage` 另收錄本輪補缺、舊樣本引用、政策／案例／程式來源雜湊與評閱表；其中新的 headless 紀錄不當作 GUI 驗收。runtime、實際設定檔、模型、機器私人路徑及其他 `.local` 內容不列入交付。
 
 原始 JSON 的 `human_review` 保持空白。這些資料可供獨立檢查本批文字與請求，但不足以測出模型一般能力、重現當時所有 sampling/cache 條件，或取代人工操作與最終模型驗收。

@@ -1,0 +1,36 @@
+{
+  "checked_at": "2026-09-18T07:05:38.883265+00:00",
+  "base_url": "http://127.0.0.1:8080/v1",
+  "health": {
+    "status": "ok"
+  },
+  "build_info": "b10590-6657ded4f",
+  "models": [
+    {
+      "id": "dealignai/Ornith-1.5-9B-CRACK-GGUF:Q6_K",
+      "meta": {
+        "vocab_type": true,
+        "n_vocab": 248320,
+        "n_ctx": 65536,
+        "n_ctx_train": 262144,
+        "n_embd": 4096,
+        "n_params": 8953803264,
+        "size": 7348291584,
+        "ftype": "Q6_K"
+      }
+    }
+  ],
+  "sampling_defaults": {
+    "temperature": 0.6000000238418579,
+    "top_k": 20,
+    "top_p": 0.949999988079071,
+    "min_p": 0.05000000074505806,
+    "seed": 4294967295,
+    "n_predict": -1,
+    "repeat_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "reasoning_format": "none"
+  },
+  "note": "Read-only preflight. Missing sampling fields unknown. No server configuration changed."
+}

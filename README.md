@@ -2,7 +2,7 @@
 
 Windows 優先的桌面 prompt 整理工具：手動貼文 → 選模式／輸出對象 → 單次改寫 → 預覽與編輯 → 明確複製。使用 Python、PySide6 與單一可設定的 chat-completions endpoint；只整理文字，不執行文字中的任務。
 
-**目前交付：Windows Task 1–7 已完成，另完成指定 Ornith 後端的首批 7 筆真實合成推論。人工品質、最終模型完整 Task 8 與 macOS Task 9 仍待驗收。** C08 出現 profile 規則混入輸出的問題，不能宣稱產品品質已通過。沒有內建模型、模型權重或 installer。
+**目前交付：Windows Task 1–7 已完成，Task 8 重跑／評閱工具已備妥。Ornith 的 C01–C12 × Astra/Generic 各一次共 24 次嘗試，23 筆完整回應、1 筆逾時。人工品質、最終模型完整 Task 8 與 macOS Task 9 仍待驗收。** 原 C08 規則混入失敗原樣保留；新 C10/Astra 出現授權失真，不能宣稱產品品質通過。沒有內建模型、模型權重或 installer。
 
 ## Windows 安裝與啟動
 
@@ -45,9 +45,17 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pytest -q --basetemp=.local/pytest-user
 ```
 
-測試使用 fake client／MockTransport，socket 對外連線被攔截，不需要 key，不呼叫付費模型。124 項通過只能證明工程契約；無法保證生成語意忠實。
+測試使用 fake client／MockTransport，socket 對外連線被攔截，不需要 key，不呼叫模型。離線測試只能證明工程契約；無法保證生成語意忠實。Windows GitHub Actions 使用相同鎖定依賴與 offscreen 測試，不執行真實推論；本輪本地結果見 [收尾紀錄](docs/acceptance/v1-completion.md)。
 
 12 個合成品質案例在 [quality_cases.json](tests/fixtures/quality_cases.json)，人工評閱欄均空白。完整 72 筆留待日常模型選定並另行授權後重新做 smoke、品質與耗時驗收；其他模型／平台尚無本專案實測。macOS 是獨立 Task 9。
+
+## Task 8 重跑與暫時覆蓋
+
+[操作手冊](docs/acceptance/task8-runbook.md) 提供離線計畫、建立獨立批次、明確送出與人工評閱表命令。工具使用產品的 transformer/client，送出前保存 request，不自動重試或 judge；人工評閱欄不預填通過。有效政策記錄完整 system prompt 與涵蓋共通／mode／profile 的版本、SHA256，另記案例、程式來源及後端資訊。
+
+本輪保留舊七筆，**只新增其餘 17 次請求**：16 筆完整回應，C10/Generic 在 60.03 秒 read timeout。沒有重跑 C08/Astra 或 C10/Generic，也沒有執行最終 3-repeat qualification。C10/Astra 新增實際發送測試字串的步驟並刪掉原本「不要真的執行」，屬嚴重授權／停止條件失真的代理觀察；部分其他案例也新增要求或工具規則。
+
+[全部 24 格與逐項人工評閱表](docs/acceptance/evidence/ornith-coverage/review.md) · [代理初評](docs/acceptance/evidence/ornith-coverage/observations.md) · [manifest／來源資訊](docs/acceptance/evidence/ornith-coverage/manifest.json) · [收尾與待驗清單](docs/acceptance/v1-completion.md)。新增樣本為 headless 產品核心驗證，不當作新的 GUI 或 macOS 驗收。
 
 ## 首批 7 筆真實推論
 
